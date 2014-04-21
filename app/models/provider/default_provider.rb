@@ -82,6 +82,14 @@ module Provider
       custom_payload && custom_payload['config']
     end
 
+    def custom_payload_before_deploy
+      custom_payload && custom_payload['before_deploy']
+    end
+
+    def custom_payload_after_deploy
+      custom_payload && custom_payload['after_deploy']
+    end
+
     def setup
       output.create
       status.output = output.url
@@ -90,6 +98,20 @@ module Provider
 
     def completed?
       status.completed?
+    end
+
+    def execute_commands(commands)
+      commands.each do |cmd|
+        system cmd
+      end
+    end
+
+    def before_deploy
+      execute_commands(custom_payload_before_deploy || [])
+    end
+
+    def after_deploy
+      execute_commands(custom_payload_after_deploy || [])
     end
 
     def execute
@@ -116,12 +138,14 @@ module Provider
     end
 
     def run!
+      before_deploy
       Timeout.timeout(timeout) do
         setup
         execute
         notify
         record
       end
+      after_deploy
     rescue StandardError => e
       Rails.logger.info e.message
       Rails.logger.info caller
