@@ -107,9 +107,9 @@ module Provider
 
     def execute_and_log(cmd)
       child = POSIX::Spawn::Child.new(cmd)
-      log_stdout(child.out)
-      log_stderr(child.err)
-      child
+      # log_stdout(child.out)
+      # log_stderr(child.err)
+      # child
     end
 
     def execute_commands(commands)
