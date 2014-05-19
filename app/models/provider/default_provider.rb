@@ -95,6 +95,7 @@ module Provider
     end
 
     def setup
+      Rails.logger.info "Setup the deploy gist"
       output.create
       status.output = output.url
       status.pending!

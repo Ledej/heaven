@@ -120,6 +120,7 @@ module Provider
     end
 
     def execute
+      Rails.logger.info "Execute the deploy"
       response = build_request
       if response.success?
         body   = JSON.parse(response.body)
