@@ -109,6 +109,7 @@ module Provider
       child = POSIX::Spawn::Child.new(cmd)
       output.outs["stdout #{cmd}"] = child.out
       output.outs["stderr #{cmd}"] = child.err
+      output.update
       child
     end
 
